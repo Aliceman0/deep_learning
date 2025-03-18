@@ -2,7 +2,7 @@ import torch
 from my_train_accuracy import accuracy
 from my_train_accuracy import Accumulator
 
-def train_epoch_ch3(net, train_iter, loss, updater):
+def train_epoch_ch3(net, train_iter, loss, updater, pbar):
     """
     训练模型一个迭代周期
     输入：
@@ -32,5 +32,7 @@ def train_epoch_ch3(net, train_iter, loss, updater):
             l.sum().backward()
             updater(X.shape[0])
         metric.add(float(l.sum()), accuracy(y_hat, y), y.numel())
+        if pbar:
+            pbar.update(1)
     # 返回训练损失和训练精度
     return metric[0] / metric[2], metric[1] / metric[2]
